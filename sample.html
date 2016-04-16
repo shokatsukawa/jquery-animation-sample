@@ -1,0 +1,75 @@
+<html>
+<head>
+  <style>
+    div {
+      font: bold 40px Tahoma, Arial;
+      background-color: #abc;
+      width: 50px;
+      text-align: center;
+      position:absolute;
+    }
+  </style>
+  <script src="jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      function animateInit() {
+        var strCount = 6;
+        var animateSpeed = 300;
+        var windowHeight = $(window).height();
+        var windowWidth = $(window).width();
+        var targetWidth = $('div').width();
+        var positionX = 0;
+        var positionY = windowHeight / 2;
+
+        $('div').hide();
+
+        // 一文字目のxの座標を取得
+        positionX = windowWidth / 2 - (strCount / 2 * targetWidth);
+        // 最初の位置を指定
+        for (var i = 1; i < strCount + 1; i++) {
+          var target = 'body > div:nth-child(' + i + ')';
+          $(target).css('left', positionX);
+          $(target).css('top', 0);
+          positionX += targetWidth;
+        }
+
+        var targetArray = [];
+        var distansStrArray = [];
+        for (var i = 1; i < strCount + 1; i++) {
+          var target = 'body > div:nth-child(' + i + ')';
+          var distans = positionY - $(target).offset().top - $(target).height();
+          var distansStr = "+=" + distans + "px";
+
+          targetArray.push(target);
+          distansStrArray.push(distansStr);
+        }
+        var animateCount = 0;
+        function doAnimate() {
+          $(targetArray[animateCount]).show('slow');
+          $(targetArray[animateCount]).animate({"top": distansStrArray[animateCount]}, animateSpeed, function() {
+            animateCount++;
+            if (animateCount == 6) {
+              setTimeout(function(){
+                animateInit();
+              }, 2000);
+            } else {
+              doAnimate();
+            }
+          });
+        }
+        doAnimate();
+      }
+      animateInit();
+    });
+  </script>
+</head>
+<body>
+    <div>J</div>
+    <div>Q</div>
+    <div>U</div>
+    <div>E</div>
+    <div>R</div>
+    <div>Y</div>
+  </div>
+</body>
+</html>
